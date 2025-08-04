@@ -649,7 +649,8 @@ class EnhancedFinancialAgentWithLLM:
             if interpretation.get("use_llm"):
                 self.show_progress("llm", "Analizando con LLM...")
                 time.sleep(1)
-                llm_response = self.llm_analyzer.analyze_with_llm(question, data_summary)
+                conversation_context = self.get_conversation_context()
+                llm_response = self.llm_analyzer.analyze_with_llm(question, data_summary, conversation_context)
                 self.execution_steps.append("llm")
                 print(f"   🤖 LLM completado: {len(llm_response)} caracteres")
                 
@@ -673,7 +674,8 @@ class EnhancedFinancialAgentWithLLM:
                         
                         # Volver a consultar al LLM con los datos adicionales
                         self.show_progress("llm", "Re-analizando con datos adicionales...")
-                        llm_response = self.llm_analyzer.analyze_with_llm(question, data_summary)
+                        conversation_context = self.get_conversation_context()
+                        llm_response = self.llm_analyzer.analyze_with_llm(question, data_summary, conversation_context)
                         print(f"   🤖 LLM re-análisis completado: {len(llm_response)} caracteres")
 
             # Paso 4: Formatear respuesta

@@ -1,22 +1,56 @@
-# Financial Conversational Agent
+# 🤖 Financial Conversational Agent v2.0
 
-Un agente conversacional inteligente para análisis financiero construido con LangGraph que interpreta preguntas en lenguaje natural, selecciona fuentes de datos relevantes y ejecuta análisis financieros cuantitativos.
+Un agente conversacional inteligente para análisis financiero construido con LangGraph que interpreta preguntas en lenguaje natural, selecciona fuentes de datos relevantes y ejecuta análisis financieros cuantitativos con **memoria contextual** y **análisis predictivo**.
 
 ## 🎯 Objetivo del Proyecto
 
 Este proyecto valida la capacidad de construir un agente conversacional que puede:
 
-- **Interpretar** preguntas financieras en lenguaje natural usando LLMs
+- **Interpretar** preguntas financieras en lenguaje natural usando LLMs avanzados
 - **Seleccionar** la fuente de datos más relevante entre múltiples archivos estructurados
 - **Ejecutar** análisis cuantitativos correctos a partir de esos datos
 - **Responder** con claridad, precisión y trazabilidad completa
+- **Recordar** conversaciones anteriores para contexto
+- **Predecir** tendencias futuras basadas en datos históricos
+- **Exportar** reportes profesionales de análisis
 
-## 🏗️ Arquitectura
+## 🚀 Nuevas Funcionalidades v2.0
 
-El agente utiliza LangGraph para crear un flujo de trabajo estructurado:
+### 🧠 **Sistema de Memoria y Contexto**
+- **Historial de conversaciones** (últimas 10)
+- **Contexto de conversaciones anteriores** en el prompt
+- **Memoria de análisis** para respuestas más inteligentes
+- **Consistencia** entre respuestas relacionadas
+
+### 🤖 **Sistema 100% LLM**
+- **Eliminamos respuestas predefinidas** problemáticas
+- **Todas las preguntas van al LLM** para mayor flexibilidad
+- **Sin errores de columnas** o datos faltantes
+- **Respuestas consistentes** y profesionales
+
+### 📊 **Análisis Predictivo**
+- **Tendencias históricas** para proyecciones futuras
+- **Análisis de patrones** mensuales
+- **Insights de comportamiento** de proveedores
+- **Recomendaciones estratégicas**
+
+### 🔄 **Sistema de Retroalimentación**
+- **Análisis adicional** cuando el LLM lo solicita
+- **Retroceso al nodo de análisis** para datos específicos
+- **Re-análisis** con información adicional
+
+### 📈 **Funcionalidades Avanzadas**
+- **Comandos especiales**: `stats`, `export`, `clear`
+- **Exportación de reportes** en formato texto
+- **Estadísticas de conversación** detalladas
+- **Gestión de memoria** (limpiar historial)
+
+## 🏗️ Arquitectura Mejorada
+
+El agente utiliza LangGraph para crear un flujo de trabajo estructurado con memoria:
 
 ```
-User Question → Question Interpretation → Data Source Selection → Data Loading → Financial Analysis → Response Formatting
+User Question → Question Interpretation → Data Source Selection → Data Loading → Financial Analysis → LLM Analysis → Response Formatting → Memory Storage
 ```
 
 ### Componentes Principales
@@ -25,7 +59,9 @@ User Question → Question Interpretation → Data Source Selection → Data Loa
 2. **Data Selector**: Selecciona archivos Excel relevantes basado en la pregunta
 3. **Data Loader**: Carga y preprocesa archivos Excel con manejo robusto de errores
 4. **Financial Analyzer**: Ejecuta análisis financieros específicos
-5. **Response Formatter**: Formatea respuestas con trazabilidad completa
+5. **LLM Analyzer**: Análisis inteligente con memoria contextual
+6. **Response Formatter**: Formatea respuestas con trazabilidad completa
+7. **Memory Manager**: Gestiona historial de conversaciones y contexto
 
 ## 📊 Fuentes de Datos
 
@@ -47,167 +83,207 @@ cd financial_agent
 
 2. **Instalar dependencias**:
 ```bash
-pip install -r requirements.txt
+pip install -r requirements_llm.txt
 ```
 
-3. **Configurar variables de entorno** (opcional):
+3. **Configurar variables de entorno**:
 ```bash
-cp .env.example .env
-# Editar .env con tu API key de OpenAI
+export OPENAI_API_KEY="tu-api-key-de-openai"
 ```
 
 ## 💻 Uso Básico
 
-### Ejemplo Simple
-
-```python
-from financial_agent.agent import FinancialAgent
-
-# Inicializar el agente
-agent = FinancialAgent(api_key="tu-api-key")
-
-# Pregunta del PRD
-question = "¿Cómo variaron mis facturas por pagar y por cobrar en los últimos 2 meses?"
-
-# Procesar la pregunta
-result = agent.process_question_sync(question)
-
-if result["success"]:
-    for message in result["response"]:
-        print(message.content)
-else:
-    print(f"Error: {result['error']}")
-```
-
-### Ejemplo Asíncrono
-
-```python
-import asyncio
-from financial_agent.agent import FinancialAgent
-
-async def main():
-    agent = FinancialAgent(api_key="tu-api-key")
-    
-    questions = [
-        "¿Cuáles son mis gastos fijos más altos?",
-        "¿Cuál es el flujo de caja de los últimos 3 meses?",
-        "¿Quiénes son mis clientes principales por facturación?"
-    ]
-    
-    for question in questions:
-        result = await agent.process_question(question)
-        if result["success"]:
-            print(f"✅ {question}")
-            print(result["response"][0].content)
-        else:
-            print(f"❌ {question}: {result['error']}")
-
-asyncio.run(main())
-```
-
-## 🧪 Ejecutar Tests
+### Ejecutar el Agente Interactivo
 
 ```bash
-# Ejecutar ejemplo de uso
-python financial_agent/example_usage.py
-
-# Ejecutar tests unitarios (cuando estén disponibles)
-pytest tests/
+python3 enhanced_financial_agent_with_llm.py
 ```
 
-## 📋 Casos de Uso
+### Comandos Disponibles
 
-### User Story Principal
+- **Pregunta normal**: Escribe tu pregunta financiera
+- **`stats`**: Ver estadísticas de conversación
+- **`export`**: Exportar reporte de conversación
+- **`clear`**: Limpiar historial de conversación
+- **`salir`**: Terminar programa
 
-> Como CEO, quiero escribir "¿Cómo variaron mis facturas por pagar y por cobrar en los últimos 2 meses?" para entender el impacto en mi flujo de caja y evaluar decisiones relacionadas con liquidez.
+### Ejemplo de Uso
 
-### Respuesta Esperada
+```python
+from enhanced_financial_agent_with_llm import EnhancedFinancialAgentWithLLM, FinancialAgentConfig
 
-El agente debería responder con:
+# Configurar el agente
+config = FinancialAgentConfig(
+    enable_llm=True,
+    enable_dynamic_visualization=True,
+    enable_feedback=True
+)
 
-1. **📊 Executive Summary (BLUF)**: Resumen ejecutivo en 1-2 oraciones
-2. **📈 Detailed Analysis**: Análisis detallado con cálculos cuantitativos
-3. **🔍 Data Sources Used**: Trazabilidad completa (archivo + columnas usadas)
-4. **💡 Key Insights**: Recomendaciones accionables
-5. **📋 Technical Details**: Datos de cálculo para verificación
+agent = EnhancedFinancialAgentWithLLM(config)
 
-## 🔧 Características Técnicas
+# Preguntas del PRD
+questions = [
+    "¿Cómo variaron mis facturas por pagar y por cobrar en los últimos 2 meses?",
+    "¿Cuál es el total de facturas por cobrar emitidas en mayo?",
+    "¿De las facturas por pagar cuál es la más alta?",
+    "¿Cuál es el proveedor con mayor monto total?",
+    "¿Cuál fue el mes con más facturas?",
+    "¿Comparado con mayo, cómo se comportó junio?"
+]
 
-### Robustez ante Errores
-
-- Manejo de fechas inconsistentes
-- Nombres de columnas ruidosos
-- Columnas sobrantes
-- Valores faltantes
-- Formato de archivos inconsistente
-
-### Análisis Financieros Soportados
-
-- **Cash Flow**: Flujo de caja y liquidez
-- **Expenses**: Análisis de gastos por categoría
-- **Revenue**: Análisis de ingresos por cliente
-- **Comparison**: Comparaciones entre períodos
-- **Trends**: Análisis de tendencias temporales
-
-### Trazabilidad Completa
-
-- Mapeo de análisis a archivos fuente
-- Identificación de columnas utilizadas
-- Cálculos raw para verificación
-- Metodologías documentadas
-
-## 🏛️ Estructura del Proyecto
-
-```
-financial_agent/
-├── __init__.py              # Inicialización del paquete
-├── agent.py                 # Agente principal con LangGraph
-├── state.py                 # Definiciones de estado y estructuras
-├── prompts.py               # Prompts especializados
-├── data_loader.py           # Carga y preprocesamiento de datos
-├── financial_analyzer.py    # Análisis financiero cuantitativo
-├── example_usage.py         # Ejemplos de uso
-├── requirements.txt         # Dependencias
-└── README.md               # Documentación
+for question in questions:
+    response = agent.process_question(question)
+    print(f"Pregunta: {question}")
+    print(f"Respuesta: {response[:200]}...")
+    print("-" * 50)
 ```
 
-## 🔍 Flujo de Trabajo Detallado
+## 🧪 Testing
 
-1. **Interpretación de Pregunta**
-   - LLM analiza la pregunta en lenguaje natural
-   - Extrae tipo de análisis, período, métricas clave
-   - Identifica fuentes de datos requeridas
+### Test Básico
+```bash
+python3 test_solo_llm.py
+```
 
-2. **Selección de Fuentes**
-   - Analiza archivos disponibles
-   - Selecciona archivos relevantes
-   - Identifica columnas específicas necesarias
+### Test de Mejoras Avanzadas
+```bash
+python3 test_mejoras_avanzadas.py
+```
 
-3. **Carga de Datos**
-   - Carga archivos Excel seleccionados
-   - Preprocesa datos (limpieza, normalización)
-   - Maneja errores de calidad de datos
+### Test de Retroalimentación
+```bash
+python3 test_retroalimentacion_especifica.py
+```
 
-4. **Análisis Financiero**
-   - Ejecuta cálculos cuantitativos específicos
-   - Genera insights y recomendaciones
-   - Mantiene trazabilidad completa
+## 📋 Tipos de Preguntas Soportadas
 
-5. **Formato de Respuesta**
-   - Estructura respuesta ejecutiva
-   - Incluye análisis detallado
-   - Proporciona trazabilidad y detalles técnicos
+### 🔍 **Preguntas Específicas**
+- "¿Cuál es la factura más alta?"
+- "¿Cuál es el proveedor con mayor monto?"
+- "¿Cuál es el total de facturas en mayo?"
 
-## 🎯 Métricas de Éxito
+### 📈 **Preguntas Predictivas**
+- "¿Cuál será el comportamiento esperado?"
+- "¿Qué tendencias se observan?"
+- "¿Cómo se proyecta el futuro?"
 
-- ✅ Interpretación correcta de preguntas financieras
-- ✅ Selección precisa de fuentes de datos
-- ✅ Cálculos cuantitativos correctos
-- ✅ Respuestas con trazabilidad completa
-- ✅ Manejo robusto de errores de datos
-- ✅ Código modular y documentado
+### 📊 **Preguntas de Análisis**
+- "¿Cuáles son las comparaciones?"
+- "¿Cómo se distribuyen los datos?"
+- "¿Qué patrones se identifican?"
 
-## 🤝 Contribución
+### 📅 **Preguntas de Tendencias**
+- "¿Cómo variaron los datos mensualmente?"
+- "¿Cuál fue el crecimiento?"
+- "¿Qué comportamientos se observan?"
+
+### 🔄 **Preguntas de Seguimiento**
+- "¿Y qué hay de...?"
+- "¿Comparado con...?"
+- "¿Además...?"
+
+## 🎯 Características Destacadas
+
+### ✅ **100% LLM**
+- Todas las preguntas usan análisis inteligente
+- Sin limitaciones de preguntas predefinidas
+- Respuestas flexibles y contextuales
+
+### ✅ **Memoria Contextual**
+- Hasta 10 conversaciones en contexto
+- Respuestas coherentes entre sesiones
+- Análisis basado en conversaciones anteriores
+
+### ✅ **Análisis Predictivo**
+- Proyecciones basadas en datos históricos
+- Tendencias y patrones identificados
+- Recomendaciones estratégicas
+
+### ✅ **Retroalimentación Inteligente**
+- Análisis adicional cuando es necesario
+- Re-análisis con datos específicos
+- Mejora continua de respuestas
+
+### ✅ **Exportación Profesional**
+- Reportes completos en formato texto
+- Estadísticas detalladas de conversación
+- Trazabilidad completa de análisis
+
+## 📊 Estadísticas del Sistema
+
+- ✅ **100% LLM**: Todas las preguntas usan análisis inteligente
+- ✅ **Memoria**: Hasta 10 conversaciones en contexto
+- ✅ **Retroalimentación**: Análisis adicional cuando es necesario
+- ✅ **Exportación**: Reportes completos en formato texto
+- ✅ **Comandos**: 4 comandos especiales disponibles
+
+## 🔧 Configuración
+
+### Cambiar Fuentes de Datos
+
+Edita el archivo `enhanced_financial_agent_with_llm.py`:
+
+```python
+config = FinancialAgentConfig(
+    data_directory="tu/ruta/a/datos",  # Cambiar aquí
+    enable_llm=True,
+    enable_dynamic_visualization=True,
+    enable_feedback=True
+)
+```
+
+### Configuración de LLM
+
+```python
+config = FinancialAgentConfig(
+    llm_model="gpt-4o-mini",  # Modelo de LLM
+    llm_max_tokens=2048,       # Tokens máximos
+    llm_temperature=0.1,       # Temperatura (creatividad)
+    enable_llm=True
+)
+```
+
+## 📈 Ejemplos de Respuestas
+
+### Pregunta: "¿Cuál fue el mes con más facturas?"
+
+```
+📊 Executive Summary
+El mes con más facturas emitidas fue mayo, con 23 facturas y un monto total de $287,450.23 MXN.
+
+📈 Detailed Analysis
+- Mayo: 23 facturas, $287,450.23 MXN
+- Junio: 17 facturas, $151,752.00 MXN
+- Promedio por factura en mayo: $12,497.84 MXN
+
+🔍 Data Sources Used
+- facturas.xlsx: Análisis mensual de facturación
+
+💡 Key Insights
+- Mayo muestra la mayor actividad de facturación
+- Se recomienda analizar factores que impulsaron esta actividad
+```
+
+### Pregunta: "¿Comparado con mayo, cómo se comportó junio?"
+
+```
+📊 Executive Summary
+Junio mostró una disminución del 26% en número de facturas y 47% en monto total comparado con mayo.
+
+📈 Detailed Analysis
+- Mayo: 23 facturas, $287,450.23 MXN
+- Junio: 17 facturas, $151,752.00 MXN
+- Diferencia: -6 facturas (-26%), -$135,698.23 (-47%)
+
+🔍 Data Sources Used
+- facturas.xlsx: Análisis comparativo mensual
+
+💡 Key Insights
+- Tendencia decreciente en actividad de facturación
+- Se recomienda investigar causas de la disminución
+```
+
+## 🤝 Contribuir
 
 1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
@@ -221,4 +297,12 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 
 ## 🆘 Soporte
 
-Para preguntas o problemas, por favor abre un issue en el repositorio o contacta al equipo de desarrollo. 
+Si tienes problemas o preguntas:
+
+1. Revisa la documentación
+2. Ejecuta los tests para verificar la instalación
+3. Abre un issue en GitHub
+
+---
+
+**🎯 Agente Financiero v2.0** - Análisis inteligente con memoria contextual y predicciones avanzadas. 
