@@ -1,0 +1,24 @@
+# Financial Agent Configuration
+# Copy this file to .env and update with your values
+
+# OpenAI API Configuration
+OPENAI_API_KEY=your-openai-api-key-here
+
+# Model Configuration
+FINANCIAL_AGENT_MODEL=gpt-4o-mini
+FINANCIAL_AGENT_MAX_TOKENS=2000
+FINANCIAL_AGENT_TEMPERATURE=0.1
+
+# Data Configuration
+FINANCIAL_AGENT_DATA_DIR=Datasets v2/Datasets v2
+
+# Analysis Configuration
+FINANCIAL_AGENT_MAX_RETRIES=3
+FINANCIAL_AGENT_TIMEOUT=30
+
+# Logging Configuration
+FINANCIAL_AGENT_LOG_LEVEL=INFO
+
+# Optional: Alternative API Keys
+# ANTHROPIC_API_KEY=your-anthropic-api-key-here
+# GOOGLE_API_KEY=your-google-api-key-here 
