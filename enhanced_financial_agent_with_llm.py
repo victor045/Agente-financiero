@@ -271,6 +271,21 @@ class FinancialDataProcessor:
                         por_cobrar = df[df['Tipo'] == 'Por cobrar']
                         por_pagar = df[df['Tipo'] == 'Por pagar']
                         
+                        # Análisis mensual por tipo
+                        if fecha_col:
+                            por_cobrar_mensual = por_cobrar.groupby(['mes', 'mes_nombre']).agg({
+                                amount_col: ['count', 'sum', 'mean']
+                            }).reset_index()
+                            por_cobrar_mensual.columns = ['mes', 'mes_nombre', 'facturas_count', 'monto_total', 'monto_promedio']
+                            
+                            por_pagar_mensual = por_pagar.groupby(['mes', 'mes_nombre']).agg({
+                                amount_col: ['count', 'sum', 'mean']
+                            }).reset_index()
+                            por_pagar_mensual.columns = ['mes', 'mes_nombre', 'facturas_count', 'monto_total', 'monto_promedio']
+                            
+                            analysis['por_cobrar_mensual'] = por_cobrar_mensual.to_dict('records')
+                            analysis['por_pagar_mensual'] = por_pagar_mensual.to_dict('records')
+                        
                         analysis['por_cobrar'] = {
                             'total_facturas': len(por_cobrar),
                             'monto_total': float(por_cobrar[amount_col].sum()) if not por_cobrar.empty else 0,
@@ -456,15 +471,20 @@ INSTRUCCIONES ESPECÍFICAS:
    - **Preguntas de Tendencias**: "variaciones mensuales", "crecimientos", "comportamientos"
    - **Preguntas de Seguimiento**: "¿y qué hay de...?", "comparado con...", "además..."
 
-7. **Formato de Respuesta**:
+7. **Filtrado por Tipo**: 
+   - Para preguntas sobre "facturas por cobrar", usa SOLO los datos de 'por_cobrar' y 'por_cobrar_mensual'
+   - Para preguntas sobre "facturas por pagar", usa SOLO los datos de 'por_pagar' y 'por_pagar_mensual'
+   - Para preguntas generales, usa 'datos_mensuales' y 'estadisticas_generales'
+
+8. **Formato de Respuesta**:
    - Executive Summary claro
    - Detailed Analysis con datos específicos
    - Data Sources Used
    - Key Insights y recomendaciones
 
-8. **Análisis Predictivo**: Para preguntas sobre el futuro, usa patrones históricos y tendencias
-9. **Análisis Adicional**: Si necesitas más datos, responde: "NEED_ANALYSIS: [descripción]"
-10. **Consistencia**: Mantén consistencia con análisis anteriores cuando sea relevante
+9. **Análisis Predictivo**: Para preguntas sobre el futuro, usa patrones históricos y tendencias
+10. **Análisis Adicional**: Si necesitas más datos, responde: "NEED_ANALYSIS: [descripción]"
+11. **Consistencia**: Mantén consistencia con análisis anteriores cuando sea relevante
 
 PREGUNTA DEL USUARIO: {question}
 
